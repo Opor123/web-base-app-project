@@ -38,7 +38,7 @@ class UserLogin(BaseModel):
 
 
 # Endpoint to create a new user
-@router.post("/users/create", response_model=User)
+@router.post("/users/", response_model=User)
 async def create_user(user: UserCreate):
    # Check if the username already exists
    existing_user = await get_user(user.username)
@@ -82,7 +82,7 @@ async def delete_user_endpoint(user_id: int):
 
 
 # Endpoint for user login
-@router.post("/users/login")
+@router.post("/users/login", response_model=User)
 async def login_user(user: UserLogin):
    # Fetch user from the database
    db_user = await get_user_by_email(user.email,user.password_hash)
