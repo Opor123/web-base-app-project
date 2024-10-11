@@ -24,11 +24,11 @@ class UserUpdate(BaseModel):
 
 # Pydantic model for user response
 class User(BaseModel):
-   user_id: int
-   username: str
-   password_hash: str
-   email: str
-   created_at: datetime
+    user_id: int
+    username: str
+    password_hash: str
+    email: str
+    created_at: datetime
 
 
 # Pydantic model for login
@@ -55,12 +55,12 @@ async def create_user(user: UserCreate):
 
 
 # Endpoint to get a user by user_id
-@router.get("/users/{user_id}", response_model=User)
-async def read_user(user_id: int):
-   result = await get_user(user_id)
-   if result is None:
-       raise HTTPException(status_code=404, detail="User not found")
-   return result
+@router.get("/users", response_model=list[User])  # Import List from typing
+async def get_users():
+    query = "SELECT * FROM users"
+    users = await database.fetch_all(query)  # Fetch all users from the database
+    return users
+
 
 
 # Endpoint to update a user
