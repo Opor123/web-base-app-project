@@ -30,5 +30,6 @@
     "recharts": "^2.12.7",
     "sweetalert2": "^11.6.13",
     "zustand": "^4.5.4"
+    
   }
 }

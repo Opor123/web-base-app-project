@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"; // React hooks to manage state and lifecycle
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -19,13 +19,13 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-} from "@mui/material"; // MUI components for UI elements like typography, grid, buttons, modal, etc.
+} from "@mui/material";
 import {
   Menu as MenuIcon,
   Dashboard,
   Notifications,
   Message,
-} from "@mui/icons-material"; // Icons from MUI for the menu and other features
+} from "@mui/icons-material";
 import {
   AreaChart,
   Area,
@@ -34,32 +34,59 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts"; // Import Recharts components for creating a responsive area chart
+} from "recharts";
 import Head from "next/head";
 
 const AdminDashboard = () => {
-  // State to control the opening and closing of the drawer (sidebar menu)
   const [openDrawer, setOpenDrawer] = useState(false);
-
-  // Snackbar state to control visibility and the message displayed in it
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  // Mock data for the chart - could be replaced by real API data
-  const chartData = [
-    { name: "Week 1", visitors: 4000, pageviews: 2400 },
-    { name: "Week 2", visitors: 3000, pageviews: 1398 },
-    { name: "Week 3", visitors: 2000, pageviews: 9800 },
-    { name: "Week 4", visitors: 2780, pageviews: 3908 },
-    { name: "Week 5", visitors: 1890, pageviews: 4800 },
-    { name: "Week 6", visitors: 2390, pageviews: 3800 },
-    { name: "Week 7", visitors: 3490, pageviews: 4300 },
-  ];
+  // State for chart data and statistics
+  const [chartData, setChartData] = useState([]);
+  const [stats, setStats] = useState({
+    sweets: 0,
+    stocks: 0,
+    pageviews: 0,
+    visitors: 0,
+    investment:0,
+    progamming:0,
+  });
+
+  const [loading, setLoading] = useState(true); // Loading state
 
   // Fetch data from API on component mount
-  // Placeholder for adding API calls in useEffect to get real-time data
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true); // Set loading to true when fetching starts
+      try {
+        // Fetch statistics
+        const responseStats = await fetch("/api/stats");
+        if (!responseStats.ok) {
+          throw new Error("Failed to fetch statistics");
+        }
+        const statsData = await responseStats.json();
+        setStats(statsData);
 
-  // Handler for closing the snackbar
+        // Fetch chart data
+        const responseChart = await fetch("/api/chart-data");
+        if (!responseChart.ok) {
+          throw new Error("Failed to fetch chart data");
+        }
+        const chartData = await responseChart.json();
+        setChartData(chartData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setSnackbarMessage(error.message || "Error fetching data");
+        setSnackbarOpen(true);
+      } finally {
+        setLoading(false); // Set loading to false when fetching ends
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -73,22 +100,36 @@ const AdminDashboard = () => {
     </Grid>
   );
 
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}>
+        <Typography variant="h6">Loading...</Typography>
+      </Box>
+    );
+  }
+
   return (
     <>
-      <Head>POPP DashBoard</Head>
+      <Head>
+        <title>POPP Dashboard</title>
+      </Head>
 
       <Box sx={{ display: "flex", height: "100vh", bgcolor: "#fdf9ee" }}>
-        {/* Top App Bar with a menu icon to trigger the drawer */}
         <AppBar
           position="fixed"
           sx={{
             zIndex: 1201,
-            bgcolor: "#ffffff", // Change this to the desired background color
-            color: "#d4af8b", // Change the text/icon color
-            p: 0.2, //padding 4 px
+            bgcolor: "#ffffff",
+            color: "#d4af8b",
+            p: 0.2,
           }}>
           <Toolbar>
-            {/* Menu Icon to open Drawer */}
             <IconButton
               edge="start"
               color="inherit"
@@ -96,123 +137,98 @@ const AdminDashboard = () => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div">
-              POPP DashBoard
+              POPP Dashboard
             </Typography>
           </Toolbar>
         </AppBar>
 
-        {/* Side drawer (menu) that opens from the left */}
         <Drawer
           anchor="left"
           open={openDrawer}
           onClose={() => setOpenDrawer(false)}>
-          {/* Drawer content */}
           <Box sx={{ width: 250 }} role="presentation">
             <List>
-              {/* Dashboard Menu Item */}
               <ListItem button>
                 <ListItemIcon>
                   <Dashboard />
                 </ListItemIcon>
                 <ListItemText primary="Dashboard" />
               </ListItem>
-
-              {/* Notifications Menu Item */}
               <ListItem button>
                 <ListItemIcon>
                   <Notifications />
                 </ListItemIcon>
                 <ListItemText primary="Notifications" />
               </ListItem>
-
-              {/* Messages Menu Item */}
               <ListItem button>
                 <ListItemIcon>
                   <Message />
                 </ListItemIcon>
                 <ListItemText primary="Messages" />
               </ListItem>
-
-              {/* Add more menu items here if needed */}
             </List>
           </Box>
         </Drawer>
 
-        {/* Main content area */}
         <Box
           component="main"
           sx={{
             flexGrow: 1,
             p: 3,
-
-            m: { sm: 0, md: 5 }, // Adjusts margin for responsive layout
-            transition: "margin 0.3s", // Smooth transition for margin when drawer opens
+            m: { sm: 0, md: 5 },
+            transition: "margin 0.3s",
           }}>
-          {/* Dashboard Title */}
           <Typography variant="h4" sx={{ marginBottom: 2 }}>
             Dashboard
           </Typography>
 
-          {/* Summary Stats in Grid */}
           <Grid container spacing={3}>
-            {/* Individual stat card*/}
-            <StatCard title="Sweets" value={40} />
-            <StatCard title="Stocks" value={60} />
-            <StatCard title="Pageviews" value={1000} />
-            <StatCard title="Visitors" value={999} />
+            {/* Use fetched stats for stat cards */}
+            <StatCard title="Sweets" value={stats.sweets} />
+            <StatCard title="Stocks" value={stats.stocks} />
+            <StatCard title="Investment" value={stats.investment} />
+            <StatCard title="Programming" value={stats.progamming} />
+            <StatCard title="Pageviews" value={stats.pageviews} />
+            <StatCard title="Visitors" value={stats.visitors} />
           </Grid>
 
-          {/* Line Chart to display visitors and pageviews over time */}
           <Typography variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
             Visitors and Pageviews Over Time
           </Typography>
-          {/* ResponsiveContainer makes the chart responsive */}
-          <ResponsiveContainer
-            width="100%"
-            height={300}
-            sx={{ bgcolor: "#ffffff" }}>
+
+          <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={chartData}>
               <defs>
-                {/* Define gradients for smoother area fill */}
                 <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#FF0000" stopOpacity={0.8} />
                   <stop offset="95%" stopColor="#FF0000" stopOpacity={0.1} />
                 </linearGradient>
                 <linearGradient id="colorPageviews" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#FFD700" stopOpacity={0.9} />{" "}
-                  {/* Darker Yellow */}
-                  <stop
-                    offset="95%"
-                    stopColor="#FFA500"
-                    stopOpacity={0.3}
-                  />{" "}
-                  {/* Orange-Yellow transition */}
+                  <stop offset="5%" stopColor="#FFD700" stopOpacity={0.9} />
+                  <stop offset="95%" stopColor="#FFA500" stopOpacity={0.3} />
                 </linearGradient>
               </defs>
 
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
 
-              {/* Enhanced Area for Visitors */}
               <Area
                 type="monotone"
                 dataKey="visitors"
                 stroke="#FF0000"
-                fill="url(#colorVisitors)" // Apply gradient
-                strokeWidth={2} // Increase line thickness
-                activeDot={{ r: 6 }} // Larger dot on hover
-                dot={{ r: 3 }} // Small dot on each data point
+                fill="url(#colorVisitors)"
+                strokeWidth={2}
+                activeDot={{ r: 6 }}
+                dot={{ r: 3 }}
                 stackId="1"
               />
-
-              {/* Enhanced Area for Pageviews */}
               <Area
                 type="monotone"
                 dataKey="pageviews"
-                stroke="#FFD700" // Dark Yellow Stroke
-                fill="url(#colorPageviews)" // Apply gradient
+                stroke="#FFD700"
+                fill="url(#colorPageviews)"
                 strokeWidth={2}
                 activeDot={{ r: 6 }}
                 dot={{ r: 3 }}
@@ -221,7 +237,6 @@ const AdminDashboard = () => {
             </AreaChart>
           </ResponsiveContainer>
 
-          {/* Snackbar for displaying messages like errors or success notifications */}
           <Snackbar
             open={snackbarOpen}
             autoHideDuration={6000}
@@ -230,7 +245,7 @@ const AdminDashboard = () => {
               onClose={handleSnackbarClose}
               severity="error"
               sx={{ width: "100%" }}>
-              {snackbarMessage} {/* Displays the snackbar message */}
+              {snackbarMessage}
             </Alert>
           </Snackbar>
         </Box>
