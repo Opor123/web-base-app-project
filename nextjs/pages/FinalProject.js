@@ -163,7 +163,7 @@ function Home() {
   return (
     <>
       <Head>
-        <title>Punboon Version</title>
+        <title>POPP-UP</title>
       </Head>
 
       <Box
@@ -323,7 +323,7 @@ function Home() {
                   onClick={handleOpenSignup}
                   underline="hover"
                 >
-                  Register
+                  Sign Up
                 </Link>
               </Grid>
               <Grid item>
