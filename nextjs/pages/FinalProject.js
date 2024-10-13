@@ -13,8 +13,10 @@ import {
   Alert,
 } from "@mui/material";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 function Home() {
+  const router = useRouter();
   const [showNewInterface, setShowNewInterface] = useState(false);
   const [animate, setAnimate] = useState(false);
   const [openLoginModal, setOpenLoginModal] = useState(false);

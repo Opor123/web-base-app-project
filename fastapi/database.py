@@ -38,14 +38,14 @@ async def get_user_by_email(email: str, password_hash: str):
     return await database.fetch_one(query=query, values={"email": email, "password_hash": password_hash})
 
 # Function to update a user in the users table
-async def update_user(user_id: int, username: str, password_hash: str, email: str):
+async def update_user(user_id: int, username: str, password_hash: str, email: str, user_type:str):
     query = """
     UPDATE users
-    SET username = :username, password_hash = :password_hash, email = :email
+    SET username = :username, password_hash = :password_hash, email = :email, user_type= :user_type
     WHERE user_id = :user_id
     RETURNING user_id, username, password_hash, email, created_at
     """
-    values = {"user_id": user_id, "username": username, "password_hash": password_hash, "email": email}
+    values = {"user_id": user_id, "username": username, "password_hash": password_hash, "email": email, "user_type": user_type}
     return await database.fetch_one(query=query, values=values)
 
 # Function to delete a user from the users table

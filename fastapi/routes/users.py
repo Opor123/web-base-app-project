@@ -17,6 +17,7 @@ class UserUpdate(BaseModel):
     username: Optional[str] = None
     password_hash: Optional[str] = None
     email: Optional[str] = None
+    user_type: Optional[str]=None
 
 # Pydantic model for user response
 class User(BaseModel):
@@ -24,6 +25,7 @@ class User(BaseModel):
     username: str
     password_hash: str
     email: str
+    user_type:str
     created_at: datetime
 
 # Pydantic model for login
@@ -54,7 +56,7 @@ async def get_users():
 # Endpoint to update a user
 @router.put("/users/{user_id}", response_model=User)
 async def update_user_endpoint(user_id: int, user: UserUpdate):
-    result = await update_user(user_id, user.username, user.password_hash, user.email)
+    result = await update_user(user_id, user.username, user.password_hash, user.email, user.user_type)
     if result is None:
         raise HTTPException(status_code=404, detail="User not found")
     return result
@@ -81,7 +83,8 @@ async def login_user(user: UserLogin):
         "user_id": db_user.user_id,
         "username": db_user.username,
         "email": db_user.email,
-        "created_at": db_user.created_at
+        "created_at": db_user.created_at,
+        "user_type":db_user.user_type
     }
 
 # Endpoint to get statistics
