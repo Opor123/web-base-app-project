@@ -63,8 +63,13 @@ function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: loginEmail, password_hash: loginPassword }),
+        body: JSON.stringify({
+          email: loginEmail,
+          password_hash: loginPassword,
+        }),
       });
+
+      console.log("Login Response:", response); // Log the response
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -72,11 +77,20 @@ function Home() {
       }
 
       const data = await response.json();
+      console.log("Login Data:", data); // Log the data returned from the server
+
       setSnackbarMessage("Login successful!");
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
-      // Handle successful login (e.g., redirect)
+
+      // Redirect based on user_type
+      if (data.user_type === "admin") {
+        router.push("/dashboard"); // Admin dashboard
+      } else {
+        router.push("/ui"); // Normal user page
+      }
     } catch (error) {
+      console.error("Login Error:", error); // Log the error
       setSnackbarMessage(error.message);
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
@@ -173,27 +187,24 @@ function Home() {
           alignItems: "center",
           height: "100vh",
           backgroundColor: "#f0f0f0",
-        }}
-      >
+        }}>
         {!showNewInterface ? (
           <Box
             sx={{
               textAlign: "center",
               opacity: animate ? 0 : 1,
               transform: animate ? "translateY(-50px)" : "translateY(0)",
-              transition: "opacity 0.5s ease-in-out, transform 0.5s ease-in-out",
-            }}
-          >
+              transition:
+                "opacity 0.5s ease-in-out, transform 0.5s ease-in-out",
+            }}>
             <Typography
               variant="h4"
-              sx={{ fontSize: "calc(100px + 2vw)", color: "#3d3d3d" }}
-            >
+              sx={{ fontSize: "calc(100px + 2vw)", color: "#3d3d3d" }}>
               POPP
             </Typography>
             <Typography
               variant="body1"
-              sx={{ fontSize: "24px", color: "#3d3d3d", marginTop: "20px" }}
-            >
+              sx={{ fontSize: "24px", color: "#3d3d3d", marginTop: "20px" }}>
               FINAL PROJECT
             </Typography>
           </Box>
@@ -203,17 +214,16 @@ function Home() {
               textAlign: "center",
               opacity: 1,
               transform: "translateY(0)",
-              transition: "opacity 0.5s ease-in-out, transform 0.5s ease-in-out",
-            }}
-          >
+              transition:
+                "opacity 0.5s ease-in-out, transform 0.5s ease-in-out",
+            }}>
             <Typography
               variant="h4"
               sx={{
                 fontSize: "calc(70px + 2vw)",
                 color: "#3d3d3d",
                 "&:hover": { cursor: "default" },
-              }}
-            >
+              }}>
               Welcome to{" "}
               <Typography
                 variant="h4"
@@ -225,8 +235,7 @@ function Home() {
                     cursor: "default",
                   },
                   transition: "color 0.4s ease-in-out",
-                }}
-              >
+                }}>
                 POPP
               </Typography>{" "}
               website
@@ -238,8 +247,7 @@ function Home() {
                 color: "#3d3d3d",
                 marginTop: "20px",
                 "&:hover": { cursor: "default" },
-              }}
-            >
+              }}>
               Explore more what you interest
             </Typography>
             <Typography
@@ -249,8 +257,7 @@ function Home() {
                 color: "#3d3d3d",
                 marginTop: "10px",
                 "&:hover": { cursor: "default" },
-              }}
-            >
+              }}>
               <Button
                 onClick={handleOpenLogin}
                 variant="outlined"
@@ -262,8 +269,7 @@ function Home() {
                     backgroundColor: "#f0f0f0",
                     color: "green",
                   },
-                }}
-              >
+                }}>
                 Click here to start journey with us
               </Button>
             </Typography>
@@ -281,8 +287,7 @@ function Home() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-        }}
-      >
+        }}>
         <Box
           sx={{
             width: "90%",
@@ -292,8 +297,7 @@ function Home() {
             p: 3,
             textAlign: "center",
             boxShadow: 24,
-          }}
-        >
+          }}>
           <Typography variant="h5" id="login-modal" sx={{ marginBottom: 2 }}>
             Log in
           </Typography>
@@ -316,13 +320,18 @@ function Home() {
               value={loginPassword}
               onChange={(e) => setLoginPassword(e.target.value)}
             />
-            <Grid container justifyContent="space-between" sx={{ marginBottom: 2 }}>
+            <Grid
+              container
+              justifyContent="space-between"
+              sx={{ marginBottom: 2 }}>
               <Grid item>
                 <Link
                   component="button"
-                  onClick={handleOpenSignup}
-                  underline="hover"
-                >
+                  onClick={() => {
+                    handleCloseLogin(); // Close login before opening signup
+                    handleOpenSignup(); // Open signup explicitly
+                  }}
+                  underline="hover">
                   Sign Up
                 </Link>
               </Grid>
@@ -330,27 +339,28 @@ function Home() {
                 <Link
                   component="button"
                   onClick={handleOpenForgotPassword}
-                  underline="hover"
-                >
+                  underline="hover">
                   Forgot password ?
                 </Link>
               </Grid>
             </Grid>
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1.5 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 1.5,
+              }}>
               <Button
                 type="submit"
                 variant="contained"
                 sx={{
                   backgroundColor: "#d4af6e",
                   "&:hover": { backgroundColor: "#bb9559" },
-                }}
-              >
+                }}>
                 Log in
               </Button>
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Remember me"
-              />
+              <FormControlLabel control={<Checkbox />} label="Remember me" />
             </Box>
           </form>
         </Box>
@@ -366,8 +376,7 @@ function Home() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-        }}
-      >
+        }}>
         <Box
           sx={{
             width: "90%",
@@ -377,8 +386,7 @@ function Home() {
             p: 3,
             textAlign: "center",
             boxShadow: 24,
-          }}
-        >
+          }}>
           <Typography variant="h5" id="signup-modal" sx={{ marginBottom: 2 }}>
             Sign up
           </Typography>
@@ -418,13 +426,15 @@ function Home() {
               value={registerConfirmPassword}
               onChange={(e) => setRegisterConfirmPassword(e.target.value)}
             />
-            <Grid container justifyContent="space-between" sx={{ marginBottom: 2 }}>
+            <Grid
+              container
+              justifyContent="space-between"
+              sx={{ marginBottom: 2 }}>
               <Grid item>
                 <Link
                   component="button"
                   onClick={handleOpenLogin}
-                  underline="hover"
-                >
+                  underline="hover">
                   Already have an account?
                 </Link>
               </Grid>
@@ -432,27 +442,28 @@ function Home() {
                 <Link
                   component="button"
                   onClick={handleOpenForgotPassword}
-                  underline="hover"
-                >
+                  underline="hover">
                   Forgot password?
                 </Link>
               </Grid>
             </Grid>
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1.5 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 1.5,
+              }}>
               <Button
                 type="submit"
                 variant="contained"
                 sx={{
                   backgroundColor: "#d4af6e",
                   "&:hover": { backgroundColor: "#bb9559" },
-                }}
-              >
+                }}>
                 Sign up
               </Button>
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Remember me"
-              />
+              <FormControlLabel control={<Checkbox />} label="Remember me" />
             </Box>
           </form>
         </Box>
@@ -468,8 +479,7 @@ function Home() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-        }}
-      >
+        }}>
         <Box
           sx={{
             width: "90%",
@@ -479,9 +489,11 @@ function Home() {
             p: 3,
             textAlign: "center",
             boxShadow: 24,
-          }}
-        >
-          <Typography variant="h5" id="forgot-password-modal" sx={{ marginBottom: 2 }}>
+          }}>
+          <Typography
+            variant="h5"
+            id="forgot-password-modal"
+            sx={{ marginBottom: 2 }}>
             Forgot Password
           </Typography>
           <form onSubmit={handleForgotPasswordSubmit}>
@@ -494,15 +506,20 @@ function Home() {
               value={forgotPasswordEmail}
               onChange={(e) => setForgotPasswordEmail(e.target.value)}
             />
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1.5 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 1.5,
+              }}>
               <Button
                 type="submit"
                 variant="contained"
                 sx={{
                   backgroundColor: "#d4af6e",
                   "&:hover": { backgroundColor: "#bb9559" },
-                }}
-              >
+                }}>
                 Send Reset Email
               </Button>
             </Box>
@@ -511,13 +528,19 @@ function Home() {
       </Modal>
 
       {/* Snackbar for notifications */}
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: "100%" }}>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}>
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
     </>
   );
-} 
+}
 
 export default Home;

@@ -8,7 +8,6 @@ import {
   Grid,
   IconButton,
   InputBase,
-  Modal,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
@@ -44,7 +43,8 @@ export default function Home() {
           position: "sticky",
           top: 0,
           zIndex: 1000,
-        }}>
+        }}
+      >
         <Typography
           variant="h4"
           sx={{
@@ -52,7 +52,8 @@ export default function Home() {
             fontSize: "32px",
             color: "#d28a55",
             letterSpacing: "2px",
-          }}>
+          }}
+        >
           POPP-UP
         </Typography>
 
@@ -60,7 +61,7 @@ export default function Home() {
         <Box
           component="nav"
           sx={{
-            display: { xs: isMenuOpen ? "block" : "none", md: "flex" },
+            display: { xs: menuOpen ? "block" : "none", md: "flex" },
             gap: { md: "40px" },
             flexDirection: { xs: "column", md: "row" },
             position: { xs: "absolute", md: "initial" },
@@ -68,19 +69,22 @@ export default function Home() {
             left: { xs: "0", md: "initial" },
             backgroundColor: { xs: "#fff", md: "transparent" },
             width: { xs: "100%", md: "auto" },
-          }}>
+          }}
+        >
           <Link
             href="#"
             underline="none"
             color="inherit"
-            sx={{ padding: "10px 20px", display: "block" }}>
+            sx={{ padding: "10px 20px", display: "block" }}
+          >
             Sweets Recipes
           </Link>
           <Link
             href="#"
             underline="none"
             color="inherit"
-            sx={{ padding: "10px 20px", display: "block" }}>
+            sx={{ padding: "10px 20px", display: "block" }}
+          >
             Stocks Investment
           </Link>
         </Box>
@@ -97,7 +101,8 @@ export default function Home() {
               ":hover": {
                 backgroundColor: "#bc7644",
               },
-            }}>
+            }}
+          >
             Log In
           </Button>
 
@@ -109,7 +114,8 @@ export default function Home() {
               backgroundColor: "#f0f0f5",
               borderRadius: "25px",
               padding: "5px 10px",
-            }}>
+            }}
+          >
             <InputBase
               placeholder="Search..."
               sx={{ padding: "0 8px", flex: 1 }}
@@ -122,7 +128,8 @@ export default function Home() {
           {/* Mobile Menu Button */}
           <IconButton
             sx={{ display: { xs: "block", md: "none" } }}
-            onClick={handleToggleMenu}>
+            onClick={toggleMenu}
+          >
             <MenuIcon />
           </IconButton>
         </Box>
@@ -138,72 +145,29 @@ export default function Home() {
             fontSize: "28px",
             color: "#d28a55",
             mb: 3,
-          }}>
+          }}
+        >
           Popular Sweets Recipes
         </Typography>
         <Grid container spacing={3}>
           {/* Replace with dynamic content */}
-          <Grid item xs={12} sm={6} md={3}>
-            <Box
-              sx={{
-                backgroundColor: "#fff",
-                borderRadius: "10px",
-                height: "220px",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                ":hover": {
-                  transform: "translateY(-5px)",
-                  boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box
-              sx={{
-                backgroundColor: "#fff",
-                borderRadius: "10px",
-                height: "220px",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                ":hover": {
-                  transform: "translateY(-5px)",
-                  boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box
-              sx={{
-                backgroundColor: "#fff",
-                borderRadius: "10px",
-                height: "220px",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                ":hover": {
-                  transform: "translateY(-5px)",
-                  boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box
-              sx={{
-                backgroundColor: "#fff",
-                borderRadius: "10px",
-                height: "220px",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                ":hover": {
-                  transform: "translateY(-5px)",
-                  boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
-                },
-              }}
-            />
-          </Grid>
-          {/* Repeat for other boxes */}
+          {[...Array(4)].map((_, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Box
+                sx={{
+                  backgroundColor: "#fff",
+                  borderRadius: "10px",
+                  height: "220px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  ":hover": {
+                    transform: "translateY(-5px)",
+                    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
+                  },
+                }}
+              />
+            </Grid>
+          ))}
         </Grid>
 
         {/* Popular Stocks Investment */}
@@ -215,71 +179,28 @@ export default function Home() {
             color: "#d28a55",
             mb: 3,
             mt: 5,
-          }}>
+          }}
+        >
           Popular Stocks Investment
         </Typography>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box
-              sx={{
-                backgroundColor: "#fff",
-                borderRadius: "10px",
-                height: "220px",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                ":hover": {
-                  transform: "translateY(-5px)",
-                  boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box
-              sx={{
-                backgroundColor: "#fff",
-                borderRadius: "10px",
-                height: "220px",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                ":hover": {
-                  transform: "translateY(-5px)",
-                  boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box
-              sx={{
-                backgroundColor: "#fff",
-                borderRadius: "10px",
-                height: "220px",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                ":hover": {
-                  transform: "translateY(-5px)",
-                  boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Box
-              sx={{
-                backgroundColor: "#fff",
-                borderRadius: "10px",
-                height: "220px",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                ":hover": {
-                  transform: "translateY(-5px)",
-                  boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
-                },
-              }}
-            />
-          </Grid>
-          {/* Repeat for other boxes */}
+          {[...Array(4)].map((_, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Box
+                sx={{
+                  backgroundColor: "#fff",
+                  borderRadius: "10px",
+                  height: "220px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  ":hover": {
+                    transform: "translateY(-5px)",
+                    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
+                  },
+                }}
+              />
+            </Grid>
+          ))}
         </Grid>
       </Box>
 
@@ -292,7 +213,8 @@ export default function Home() {
           textAlign: "center",
           marginTop: "50px",
           borderTop: "1px solid #ccc",
-        }}>
+        }}
+      >
         <Typography variant="body1" sx={{ marginBottom: "15px" }}>
           Contact Us
         </Typography>
@@ -301,25 +223,18 @@ export default function Home() {
             display: "flex",
             justifyContent: "center",
             gap: "20px",
-          }}>
-          <Typography
-            variant="body1"
-            sx={{ fontWeight: 600, color: "#d28a55" }}>
+          }}
+        >
+          <Typography variant="body1" sx={{ fontWeight: 600, color: "#d28a55" }}>
             Punboon
           </Typography>
-          <Typography
-            variant="body1"
-            sx={{ fontWeight: 600, color: "#d28a55" }}>
+          <Typography variant="body1" sx={{ fontWeight: 600, color: "#d28a55" }}>
             Tang
           </Typography>
-          <Typography
-            variant="body1"
-            sx={{ fontWeight: 600, color: "#d28a55" }}>
+          <Typography variant="body1" sx={{ fontWeight: 600, color: "#d28a55" }}>
             PP
           </Typography>
-          <Typography
-            variant="body1"
-            sx={{ fontWeight: 600, color: "#d28a55" }}>
+          <Typography variant="body1" sx={{ fontWeight: 600, color: "#d28a55" }}>
             Opor
           </Typography>
         </Box>
