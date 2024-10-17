@@ -1,0 +1,129 @@
+{
+"userinterests": [
+	{
+		"interest_id" : 1,
+		"user_id" : 1,
+		"interest_name" : "Cooking",
+		"created_at" : "2024-04-25T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 2,
+		"user_id" : 1,
+		"interest_name" : "Hiking",
+		"created_at" : "2023-12-07T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 3,
+		"user_id" : 2,
+		"interest_name" : "Gaming",
+		"created_at" : "2024-08-18T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 4,
+		"user_id" : 3,
+		"interest_name" : "Music",
+		"created_at" : "2023-08-06T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 5,
+		"user_id" : 4,
+		"interest_name" : "Traveling",
+		"created_at" : "2023-01-30T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 6,
+		"user_id" : 5,
+		"interest_name" : "Basketball",
+		"created_at" : "2024-03-06T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 7,
+		"user_id" : 6,
+		"interest_name" : "Reading",
+		"created_at" : "2023-01-17T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 8,
+		"user_id" : 7,
+		"interest_name" : "Investment",
+		"created_at" : "2023-11-27T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 9,
+		"user_id" : 8,
+		"interest_name" : "Programming",
+		"created_at" : "2024-08-25T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 10,
+		"user_id" : 9,
+		"interest_name" : "Sweet Recipes",
+		"created_at" : "2022-12-11T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 11,
+		"user_id" : 10,
+		"interest_name" : "Yoga",
+		"created_at" : "2023-05-27T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 12,
+		"user_id" : 11,
+		"interest_name" : "Photography",
+		"created_at" : "2022-11-23T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 13,
+		"user_id" : 12,
+		"interest_name" : "Cycling",
+		"created_at" : "2023-02-12T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 14,
+		"user_id" : 13,
+		"interest_name" : "Gardening",
+		"created_at" : "2024-04-10T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 15,
+		"user_id" : 14,
+		"interest_name" : "Travel Blogging",
+		"created_at" : "2023-05-08T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 16,
+		"user_id" : 15,
+		"interest_name" : "Home Brewing",
+		"created_at" : "2023-08-30T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 17,
+		"user_id" : 16,
+		"interest_name" : "Knitting",
+		"created_at" : "2024-03-27T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 18,
+		"user_id" : 17,
+		"interest_name" : "Gaming",
+		"created_at" : "2023-06-22T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 19,
+		"user_id" : 18,
+		"interest_name" : "Travel",
+		"created_at" : "2024-01-04T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 20,
+		"user_id" : 19,
+		"interest_name" : "Music",
+		"created_at" : "2024-08-04T17:39:11.000Z"
+	},
+	{
+		"interest_id" : 21,
+		"user_id" : 20,
+		"interest_name" : "Cooking",
+		"created_at" : "2023-07-02T17:39:11.000Z"
+	}
+]}

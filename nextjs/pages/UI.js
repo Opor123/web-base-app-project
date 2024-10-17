@@ -13,22 +13,27 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Head from "next/head";
 
-export default function Home() {
+export default function ui() {
   const [menuOpen, setMenuOpen] = useState(false); // Mobile menu toggle
   const [anchorEl, setAnchorEl] = useState(null); // State to track the anchor for the dropdown
   const [menuType, setMenuType] = useState(""); // Track which menu type is open
+  const [closeTimeout, setCloseTimeout] = useState(null); // Track hover close timeout
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   // Event handler for hover menu
   const handleHoverMenuOpen = (event, menu) => {
+    if (closeTimeout) clearTimeout(closeTimeout); // Prevent premature close
     setAnchorEl(event.currentTarget);
     setMenuType(menu);
   };
 
   const handleHoverMenuClose = () => {
-    setAnchorEl(null);
-    setMenuType("");
+    const timeout = setTimeout(() => {
+      setAnchorEl(null);
+      setMenuType("");
+    }, 200);
+    setCloseTimeout(timeout);
   };
 
   const isMenuOpen = Boolean(anchorEl); // Check if dropdown is open
@@ -36,12 +41,12 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>POPP-UP</title>
         <link
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins:wght@400;600&display=swap"
           rel="stylesheet"
         />
       </Head>
+
       {/* Header */}
       <Box
         component="header"
@@ -49,9 +54,9 @@ export default function Home() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "15px 30px",
-          backgroundColor: "#fff",
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+          padding: "20px 40px",
+          backgroundColor: "#ffffff",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.05)",
           position: "sticky",
           top: 0,
           zIndex: 1000,
@@ -59,21 +64,28 @@ export default function Home() {
         <Typography
           variant="h4"
           sx={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: "32px",
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "28px",
+            fontWeight: 600,
             color: "#d28a55",
-            letterSpacing: "2px",
+            letterSpacing: "1px",
           }}>
           POPP-UP
         </Typography>
 
         {/* Navigation */}
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box sx={{ display: "flex", gap: "30px" }}>
           <Link
             href="#"
             underline="none"
             color="inherit"
-            sx={{ padding: "10px 20px", display: "block" }}
+            sx={{
+              fontSize: "16px",
+              color: "#333",
+              padding: "10px 15px",
+              ":hover": { color: "#d28a55" },
+              transition: "color 0.2s ease",
+            }}
             onMouseEnter={(event) =>
               handleHoverMenuOpen(event, "Sweets Recipes")
             }>
@@ -84,7 +96,13 @@ export default function Home() {
             href="#"
             underline="none"
             color="inherit"
-            sx={{ padding: "10px 20px", display: "block" }}
+            sx={{
+              fontSize: "16px",
+              color: "#333",
+              padding: "10px 15px",
+              ":hover": { color: "#d28a55" },
+              transition: "color 0.2s ease",
+            }}
             onMouseEnter={(event) =>
               handleHoverMenuOpen(event, "Stocks Investment")
             }>
@@ -98,12 +116,16 @@ export default function Home() {
           open={isMenuOpen} // Set dropdown state
           onClose={handleHoverMenuClose}
           MenuListProps={{
-            onMouseLeave: handleHoverMenuClose, // Close dropdown on mouse leave
+            onMouseEnter: () => {
+              if (closeTimeout) clearTimeout(closeTimeout);
+            },
+            onMouseLeave: handleHoverMenuClose,
           }}
           sx={{
             "& .MuiPaper-root": {
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)",
               padding: "10px",
+              borderRadius: "8px",
             },
           }}>
           {menuType === "Sweets Recipes" && (
@@ -115,7 +137,6 @@ export default function Home() {
           )}
           {menuType === "Stocks Investment" && (
             <>
-
               <MenuItem onClick={handleHoverMenuClose}>Apple</MenuItem>
               <MenuItem onClick={handleHoverMenuClose}>Nvidia</MenuItem>
               <MenuItem onClick={handleHoverMenuClose}>Microsoft</MenuItem>
@@ -130,9 +151,8 @@ export default function Home() {
             alt="user"
             src="/img/avatar.png"
             sx={{
-              verticalAlign: "middle",
-              width: 50,
-              height: 50,
+              width: 40,
+              height: 40,
               borderRadius: "50%",
             }}
           />
@@ -142,13 +162,13 @@ export default function Home() {
             sx={{
               display: "flex",
               alignItems: "center",
-              backgroundColor: "#f0f0f5",
-              borderRadius: "25px",
-              padding: "5px 10px",
+              backgroundColor: "#f7f7f7",
+              borderRadius: "30px",
+              padding: "5px 15px",
             }}>
             <InputBase
               placeholder="Search..."
-              sx={{ padding: "0 8px", flex: 1 }}
+              sx={{ flex: 1, fontSize: "14px" }}
             />
             <IconButton>
               <SearchIcon />
@@ -165,31 +185,35 @@ export default function Home() {
       </Box>
 
       {/* Main content */}
-      <Box component="section" sx={{ padding: "60px 30px" }}>
+      <Box
+        component="section"
+        sx={{ padding: "80px 40px", backgroundColor: "#fafafa" }}>
         {/* Popular Sweets Recipes */}
         <Typography
           variant="h5"
           sx={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: "28px",
-            color: "#d28a55",
-            mb: 3,
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "24px",
+            fontWeight: 600,
+            color: "#333",
+            mb: 4,
           }}>
           Popular Sweets Recipes
         </Typography>
-        <Grid container spacing={3}>
+
+        <Grid container spacing={4}>
           {[...Array(4)].map((_, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
               <Box
                 sx={{
                   backgroundColor: "#fff",
-                  borderRadius: "10px",
+                  borderRadius: "12px",
                   height: "220px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.08)",
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
                   ":hover": {
                     transform: "translateY(-5px)",
-                    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
+                    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.12)",
                   },
                 }}
               />
@@ -201,27 +225,29 @@ export default function Home() {
         <Typography
           variant="h5"
           sx={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: "28px",
-            color: "#d28a55",
-            mb: 3,
-            mt: 5,
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "24px",
+            fontWeight: 600,
+            color: "#333",
+            mb: 4,
+            mt: 6,
           }}>
           Popular Stocks Investment
         </Typography>
-        <Grid container spacing={3}>
+
+        <Grid container spacing={4}>
           {[...Array(4)].map((_, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
               <Box
                 sx={{
                   backgroundColor: "#fff",
-                  borderRadius: "10px",
+                  borderRadius: "12px",
                   height: "220px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.08)",
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
                   ":hover": {
                     transform: "translateY(-5px)",
-                    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
+                    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.12)",
                   },
                 }}
               />
@@ -237,10 +263,12 @@ export default function Home() {
           backgroundColor: "#fff",
           padding: "40px 20px",
           textAlign: "center",
-          marginTop: "50px",
-          borderTop: "1px solid #ccc",
+          borderTop: "1px solid #ececec",
+          mt: 4,
         }}>
-        <Typography variant="body1" sx={{ marginBottom: "15px" }}>
+        <Typography
+          variant="body1"
+          sx={{ marginBottom: "15px", fontWeight: 500 }}>
           Contact Us
         </Typography>
         <Box
@@ -248,6 +276,7 @@ export default function Home() {
             display: "flex",
             justifyContent: "center",
             gap: "20px",
+            mb: 2,
           }}>
           <Typography
             variant="body1"
@@ -270,6 +299,17 @@ export default function Home() {
             Opor
           </Typography>
         </Box>
+        <Link
+          href="/privacy-policy"
+          sx={{ color: "#666", fontSize: "14px", mr: 1 }}>
+          Privacy Policy
+        </Link>
+        |
+        <Link
+          href="/terms-of-service"
+          sx={{ color: "#666", fontSize: "14px", ml: 1 }}>
+          Terms of Service
+        </Link>
       </Box>
     </>
   );

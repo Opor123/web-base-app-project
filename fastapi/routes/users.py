@@ -126,4 +126,3 @@ async def get_chart_data():
         }
         for record in chart_data
     ]
-
