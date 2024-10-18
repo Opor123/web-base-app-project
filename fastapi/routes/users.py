@@ -95,14 +95,16 @@ async def get_stats():
     stocks_count = await database.fetch_val("SELECT COUNT(*) FROM contentcategories WHERE category_name = 'Stock'")
     pageviews_count = await database.fetch_val("SELECT COUNT(*) FROM usercontent")
     visitors_count = await database.fetch_val("SELECT COUNT(DISTINCT user_id) FROM usercontent")
-    investment_count= await database.fetch_val("SELECT COUNT(*) FROM contentcategories WHERE category_name= 'Investment'")
+    program_count= await database.fetch_val("SELECT COUNT(*) FROM contentcategories WHERE category_name= 'Programming'")
+    basketball_count= await database.fetch_val("SELECT COUNT(*) FROM contentcategories WHERE category_name= 'Basketball'")
     
     return {
         "sweets": sweets_count,
         "stocks": stocks_count,
         "pageviews": pageviews_count,
         "visitors": visitors_count,
-        "investment": investment_count,
+        "programming": program_count,
+        "basketball": basketball_count
     }
 
 # Endpoint to get chart data for visitors and pageviews over time

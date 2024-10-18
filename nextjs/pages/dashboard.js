@@ -122,8 +122,10 @@ const AdminDashboard = () => {
               "Stocks",
               "Investment",
               "Programming",
+              "Basketball",
               "Pageviews",
               "Visitors",
+              
             ].map((title) => (
               <StatCard
                 key={title}
